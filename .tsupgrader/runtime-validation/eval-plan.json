@@ -1,0 +1,44 @@
+{
+  "projectType": "webapp",
+  "setup": [],
+  "assertions": [
+    {
+      "name": "tsc-no-emit",
+      "kind": "process",
+      "command": "node",
+      "args": ["node_modules\\typescript\\bin\\tsc", "--noEmit"],
+      "verificationMethod": "exit-code",
+      "expected": "0",
+      "timeoutSeconds": 180
+    },
+    {
+      "name": "tests-pass",
+      "kind": "process",
+      "command": "node",
+      "args": ["--test"],
+      "verificationMethod": "test-results",
+      "expected": "0",
+      "timeoutSeconds": 120
+    },
+    {
+      "name": "dashboard-renders",
+      "kind": "http-probe",
+      "startCommand": "node",
+      "startArgs": ["node_modules\\next\\dist\\bin\\next", "start", "--hostname", "127.0.0.1", "--port", "3149"],
+      "url": "http://127.0.0.1:3149/",
+      "verificationMethod": "output-contains",
+      "expected": "NSE F&amp;O Market Scanner",
+      "timeoutSeconds": 120
+    },
+    {
+      "name": "retired-ticker-rejected",
+      "kind": "http-probe",
+      "startCommand": "node",
+      "startArgs": ["node_modules\\next\\dist\\bin\\next", "start", "--hostname", "127.0.0.1", "--port", "3149"],
+      "url": "http://127.0.0.1:3149/api/market-data?symbol=TATAMOTORS.NS",
+      "verificationMethod": "http-status",
+      "expected": "400",
+      "timeoutSeconds": 120
+    }
+  ]
+}

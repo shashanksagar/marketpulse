@@ -1,0 +1,129 @@
+{
+  "planHash": "c4d61b93b9b61ca302232b279de582cdb5b91e0edded4d65e4e07bfa9ac42e7f",
+  "phase": "standalone",
+  "recordedAtUtc": "2026-11-12T08:37:24.4423041Z",
+  "retryCount": 2,
+  "resetBaseline": false,
+  "complete": true,
+  "result": {
+    "setupSucceeded": true,
+    "setupDurationMs": 0,
+    "setupFailureOutput": null,
+    "assertions": [
+      {
+        "name": "tsc-no-emit",
+        "kind": "process",
+        "verificationMethod": "exit-code",
+        "passed": true,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": 0,
+        "outputSample": "",
+        "durationMs": 7873
+      },
+      {
+        "name": "tests-pass",
+        "kind": "process",
+        "verificationMethod": "test-results",
+        "passed": true,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": 0,
+        "outputSample": "(node:4544) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///C:/Users/5709xr/OneDrive%20-%20BP/Documents/VS%20Code/Trendy/tredye-pulse/src/lib/market.ts is not specified and it doesn\u0027t parse as CommonJS.\r\nReparsing as ES module because module syntax was detected. This incurs a performance overhead.\r\nTo eliminate this warning, add \u0022type\u0022: \u0022module\u0022 to \\\\?\\C:\\Users\\5709xr\\OneDrive - BP\\Documents\\VS Code\\Trendy\\tredye-pulse\\package.json.\r\n(Use \u0060node.EXE --trace-warnings ...\u0060 to show where the warning was created)\r\n\u2714 signal quadrants preserve thresholds; unknown inputs never create a signal (4.7486ms)\r\n\u2714 startup and outage payloads contain no fabricated prices or candles (338.1997ms)\r\n\u2714 formatters render null and nonfinite fields as N/A, including suffixes (44.2227ms)\r\n\u2714 universe contains unique current NSE symbols and complete sector tags (3.5209ms)\r\n\u2714 real quote normalization prefers 10D then 3M, with exact derived fields (11.2054ms)\r\n\u2714 failed or invalid prices null all dependent observations instead of using a base price (0.5441ms)\r\n\u2714 partial quotes preserve valid observations without fabricated volume, range or date (1.0787ms)\r\n\u2714 real zero volume and flat sessions remain neutral and bounded (0.5332ms)\r\n\u2714 breadth and sector averages exclude missing price or change, not treat them as flat (0.632ms)\r\n\u2714 mood implements weighted formula using observed breadth and exact breakout threshold (0.4255ms)\r\n\u2714 mood requires observed breadth, NIFTY change and VIX rather than substituting demo inputs (0.2692ms)\r\n\u2714 mood regime boundaries and extreme input clamping remain exact (0.2801ms)\r\n\u2714 rotation uses all eight sector indices and exact volume-weighted signed scores (1.1385ms)\r\n\u2714 ribbons conserve matched flow on both sides without exceeding any node (0.4672ms)\r\n\u2714 missing sector changes are excluded; only volume weights may be explicitly modeled (0.3849ms)\r\n\u2714 one-sided and unchanged markets never fabricate opposing flows (1.17ms)\r\n\u2714 quote chunks cap requests at 40, pace 150ms, deduplicate, and survive failed chunks (0.6252ms)\r\n\u2139 tests 17\r\n\u2139 suites 0\r\n\u2139 pass 17\r\n\u2139 fail 0\r\n\u2139 cancelled 0\r\n\u2139 skipped 0\r\n\u2139 todo 0\r\n\u2139 duration_ms 939.8098\r\n",
+        "durationMs": 1288,
+        "testResults": {
+          "testFramework": "unknown",
+          "runnerDetectedFrom": "none",
+          "testsTotal": 0,
+          "testsPassed": 0,
+          "testsFailed": 0,
+          "testsSkipped": 0,
+          "parseFailed": true
+        }
+      },
+      {
+        "name": "dashboard-renders",
+        "kind": "http-probe",
+        "verificationMethod": "output-contains",
+        "passed": true,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": null,
+        "outputSample": "HTTP 200\n\u003C!DOCTYPE html\u003E\u003Chtml lang=\u0022en\u0022 class=\u0022h-full antialiased\u0022\u003E\u003Chead\u003E\u003Cmeta charSet=\u0022utf-8\u0022/\u003E\u003Cmeta name=\u0022viewport\u0022 content=\u0022width=device-width, initial-scale=1\u0022/\u003E\u003Clink rel=\u0022stylesheet\u0022 href=\u0022/_next/static/chunks/1ywah8zawp_fo.css\u0022 data-precedence=\u0022next\u0022/\u003E\u003Clink rel=\u0022preload\u0022 as=\u0022script\u0022 fetchPriority=\u0022low\u0022 href=\u0022/_next/static/chunks/0j1we3cwg31qe.js\u0022/\u003E\u003Cscript src=\u0022/_next/static/chunks/0m3mby5pxg4oz.js\u0022 async=\u0022\u0022\u003E\u003C/script\u003E\u003Cscript src=\u0022/_next/static/chunks/39_j1bdzreq0m.js\u0022 async=\u0022\u0022\u003E\u003C/script\u003E\u003Cscript src=\u0022/_next/static/chunks/turbopack-2u1d16houkiyo.js\u0022 async=\u0022\u0022\u003E\u003C/script\u003E\u003Cscript src=\u0022/_next/static/chunks/3qfy96eoyh-ek.js\u0022 async=\u0022\u0022\u003E\u003C/script\u003E\u003Cscript src=\u0022/_next/static/chunks/14q0_n0bk8l_z.js\u0022 async=\u0022\u0022\u003E\u003C/script\u003E\u003Ctitle\u003EMarket Pulse | Indian Market Intelligence\u003C/title\u003E\u003Cmeta name=\u0022description\u0022 content=\u0022Indian NSE market breadth, sector momentum, and interactive candlestick charts. Free delayed market intelligence, without API keys.\u0022/\u003E\u003Clink rel=\u0022icon\u0022 href=\u0022/favicon.ico?favicon.117ezoe8m31dk.ico\u0022 sizes=\u002248x48\u0022 type=\u0022image/x-icon\u0022/\u003E\u003Cscript src=\u0022/_next/static/chunks/0cz1d0mv5g_q7.js\u0022 noModule=\u0022\u0022\u003E\u003C/script\u003E\u003C/head\u003E\u003Cbody class=\u0022min-h-full flex flex-col\u0022\u003E\u003Cdiv hidden=\u0022\u0022\u003E\u003C!--$--\u003E\u003C!--/$--\u003E\u003C/div\u003E\u003Cdiv class=\u0022min-h-screen bg-[#090B10] text-slate-100\u0022\u003E\u003Cheader class=\u0022sticky top-0 z-30 border-b border-[#232832] bg-[#0B0E14]/95 backdrop-blur-xl\u0022\u003E\u003Cdiv class=\u0022mx-auto flex h-[72px] max-w-[1600px] items-center gap-8 px-4 sm:px-8\u0022\u003E\u003Cbutton class=\u0022flex shrink-0 items-center gap-2.5\u0022 aria-label=\u0022Market Pulse home\u0022\u003E\u003Cspan class=\u0022flex size-9 items-center justify-center rounded-xl bg-[#b7f76b] text-[#12200b]\u0022\u003E\u003Csvg xmlns=\u0022http://www.w3.org/2000/svg\u0022 width=\u002223\u0022 height=\u002223\u0022 viewBox=\u00220 0 24 24\u0022 fill=\u0022none\u0022 stroke=\u0022currentColor\u0022 stroke-width=\u00222.6\u0022 stroke-linecap=\u0022round\u0022 stroke-linejoin=\u0022round\u0022 class=\u0022lucide lucide-activity\u0022 aria-hidden=\u0022true\u0022\u003E\u003Cpath d=\u0022M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2\u0022\u003E\u003C/path\u003E\u003C/svg\u003E\u003C/span\u003E\u003Cspan class=\u0022text-[19px] font-bold tracking-tight\u0022\u003Emarket\u003Cspan class=\u0022text-[#b7f76b]\u0022\u003Epulse\u003C/span\u003E\u003Cspan class=\u0022ml-1 text-[#657083]\u0022\u003E.\u003C/span\u003E\u003C/span\u003E\u003C/button\u003E\u003Cnav class=\u0022hidden h-full items-center gap-6 md:flex\u0022 aria-label=\u0022Main navigation\u0022\u003E\u003Cbutton aria-current=\u0022page\u0022 class=\u0022relative h-full text-[13px] font-medium transition-colors text-[#b7f76b] after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:bg-[#b7f76b]\u0022\u003EPulse\u003C/button\u003E\u003Cbutton class=\u0022relative h-full text-[13px] font-medium transition-colors text-slate-400 hover:text-white\u0022\u003ESector Flow\u003C/button\u003E\u003Cbutton class=\u0022relative h-full text-[13px] font-medium transition-colors text-slate-400 hover:text-white\u0022\u003EScreeners\u003C/button\u003E\u003Cbutton class=\u0022relative h-full text-[13px] font-medium transition-colors text-slate-400 hover:text-white\u0022\u003EWatchlist\u003C/button\u003E\u003C/nav\u003E\u003Cdiv class=\u0022ml-auto flex items-center gap-4\u0022\u003E\u003Cspan class=\u0022hidden items-center gap-2 rounded-full border border-[#28352d] bg-[#142019] px-3 py-1.5 text-[10px] font-semibold tracking-wide text-[#9ac3a8] lg:flex\u0022\u003E\u003Cspan class=\u0022size-1.5 rounded-full bg-[#9bd875]\u0022\u003E\u003C/span\u003E NSE EOD / DELAYED\u003C/span\u003E\u003Cbutton class=\u0022flex items-center gap-3 rounded-lg border border-[#2a303b] bg-[#141821] px-3 py-2 text-xs text-slate-400 hover:border-slate-500\u0022 aria-label=\u0022Search symbols\u0022\u003E\u003Csvg xmlns=\u0022http://www.w3.org/2000/svg\u0022 width=\u002215\u0022 height=\u002215\u0022 viewBox=\u00220 0 24 24\u0022 fill=\u0022none\u0022 stroke=\u0022currentColor\u0022 stroke-width=\u00222\u0022 stroke-linecap=\u0022round\u0022 stroke-linejoin=\u0022round\u0022 class=\u0022lucide lucide-search\u0022 aria-hidden=\u0022true\u0022\u003E\u003Cpath d=\u0022m21 21-4.34-4.34\u0022\u003E\u003C/path\u003E\u003Ccircle cx=\u002211\u0022 cy=\u002211\u0022 r=\u00228\u0022\u003E\u003C/circle\u003E\u003C/svg\u003E\u003Cspan class=\u0022hidden sm:inline\u0022\u003ESearch symbols\u003C/span\u003E\u003Ckbd class=\u0022hidden items-center gap-1 rounded border border-[#323946] px-1 text-[10px] sm:flex\u0022\u003E\u003Csvg xmlns=\u0022http://www.w3.org/2000/svg\u0022 width=\u002210\u0022 height=\u002210\u0022 viewBox=\u00220 0 24 24\u0022 fill=\u0022none\u0022 stroke=\u0022currentColor\u0022 stroke-width=\u00222\u0022 stroke-linecap=\u0022round\u0022 stroke-linejoin=\u0022round\u0022 class=\u0022lucide lucide-command\u0022 aria-hidden=\u0022true\u0022\u003E\u003Cpath d=\u0022M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3\u0022\u003E\u003C/path\u003E\u003C/svg\u003E Ctrl K\u003C/kbd\u003E\u003C/button\u003E\u003Cspan class=\u0022hidden size-8\n\u2026[truncated]",
+        "durationMs": 8944
+      },
+      {
+        "name": "retired-ticker-rejected",
+        "kind": "http-probe",
+        "verificationMethod": "http-status",
+        "passed": true,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": null,
+        "outputSample": "HTTP 400\n{\u0022error\u0022:\u0022Unsupported NSE symbol.\u0022,\u0022symbols\u0022:[\u0022^NSEI\u0022,\u0022^NSEBANK\u0022,\u0022^CNXIT\u0022,\u0022RELIANCE.NS\u0022,\u0022TCS.NS\u0022,\u0022HDFCBANK.NS\u0022,\u0022ICICIBANK.NS\u0022,\u0022INFY.NS\u0022,\u0022SBIN.NS\u0022,\u0022BHARTIARTL.NS\u0022,\u0022ITC.NS\u0022,\u0022LT.NS\u0022,\u0022AXISBANK.NS\u0022,\u0022KOTAKBANK.NS\u0022,\u0022BAJFINANCE.NS\u0022,\u0022MARUTI.NS\u0022,\u0022SUNPHARMA.NS\u0022,\u0022TITAN.NS\u0022,\u0022TATASTEEL.NS\u0022,\u0022NTPC.NS\u0022,\u0022POWERGRID.NS\u0022,\u0022ONGC.NS\u0022,\u0022ADANIENT.NS\u0022,\u0022ADANIPORTS.NS\u0022,\u0022COALINDIA.NS\u0022,\u0022HINDALCO.NS\u0022,\u0022JSWSTEEL.NS\u0022,\u0022M\u0026M.NS\u0022,\u0022BAJAJ-AUTO.NS\u0022,\u0022EICHERMOT.NS\u0022,\u0022HEROMOTOCO.NS\u0022,\u0022CIPLA.NS\u0022,\u0022DRREDDY.NS\u0022,\u0022DIVISLAB.NS\u0022,\u0022APOLLOHOSP.NS\u0022,\u0022WIPRO.NS\u0022,\u0022HCLTECH.NS\u0022,\u0022TECHM.NS\u0022,\u0022PERSISTENT.NS\u0022,\u0022COFORGE.NS\u0022,\u0022MPHASIS.NS\u0022,\u0022TRENT.NS\u0022,\u0022DMART.NS\u0022,\u0022HAL.NS\u0022,\u0022BEL.NS\u0022,\u0022BHEL.NS\u0022,\u0022SIEMENS.NS\u0022,\u0022ABB.NS\u0022,\u0022CGPOWER.NS\u0022,\u0022POLYCAB.NS\u0022,\u0022HAVELLS.NS\u0022,\u0022VOLTAS.NS\u0022,\u0022DIXON.NS\u0022,\u0022PFC.NS\u0022,\u0022RECLTD.NS\u0022,\u0022IRCTC.NS\u0022,\u0022INDIGO.NS\u0022,\u0022DLF.NS\u0022,\u0022GODREJPROP.NS\u0022,\u0022OBEROIRLTY.NS\u0022,\u0022LODHA.NS\u0022,\u0022CHOLAFIN.NS\u0022,\u0022SHRIRAMFIN.NS\u0022,\u0022MUTHOOTFIN.NS\u0022,\u0022SBILIFE.NS\u0022,\u0022HDFCLIFE.NS\u0022,\u0022BAJAJFINSV.NS\u0022,\u0022INDUSINDBK.NS\u0022,\u0022FEDERALBNK.NS\u0022,\u0022IDFCFIRSTB.NS\u0022,\u0022PNB.NS\u0022,\u0022BANKBARODA.NS\u0022,\u0022CANBK.NS\u0022,\u0022AUROPHARMA.NS\u0022,\u0022LUPIN.NS\u0022,\u0022BIOCON.NS\u0022,\u0022TORNTPHARM.NS\u0022,\u0022ALKEM.NS\u0022,\u0022ZYDUSLIFE.NS\u0022,\u0022VEDL.NS\u0022,\u0022JINDALSTEL.NS\u0022,\u0022NMDC.NS\u0022,\u0022SAIL.NS\u0022,\u0022NATIONALUM.NS\u0022,\u0022BPCL.NS\u0022,\u0022IOC.NS\u0022,\u0022GAIL.NS\u0022,\u0022HINDPETRO.NS\u0022,\u0022TATAPOWER.NS\u0022,\u0022JSWENERGY.NS\u0022,\u0022NHPC.NS\u0022,\u0022ULTRACEMCO.NS\u0022,\u0022GRASIM.NS\u0022,\u0022AMBUJACEM.NS\u0022,\u0022ACC.NS\u0022,\u0022SHREECEM.NS\u0022,\u0022DALBHARAT.NS\u0022,\u0022ASIANPAINT.NS\u0022,\u0022PIDILITIND.NS\u0022,\u0022BERGEPAINT.NS\u0022,\u0022HINDUNILVR.NS\u0022,\u0022NESTLEIND.NS\u0022,\u0022BRITANNIA.NS\u0022,\u0022TATACONSUM.NS\u0022,\u0022VBL.NS\u0022,\u0022GODREJCP.NS\u0022,\u0022DABUR.NS\u0022,\u0022MARICO.NS\u0022,\u0022COLPAL.NS\u0022,\u0022UNITDSPR.NS\u0022,\u0022UBL.NS\u0022,\u0022JUBLFOOD.NS\u0022,\u0022PAGEIND.NS\u0022,\u0022ABFRL.NS\u0022,\u0022BATAINDIA.NS\u0022,\u0022PIIND.NS\u0022,\u0022UPL.NS\u0022,\u0022SRF.NS\u0022,\u0022DEEPAKNTR.NS\u0022,\u0022NAVINFLUOR.NS\u0022,\u0022TATACHEM.NS\u0022,\u0022AARTIIND.NS\u0022,\u0022CHAMBLFERT.NS\u0022,\u0022COROMANDEL.NS\u0022,\u0022ASTRAL.NS\u0022,\u0022SUPREMEIND.NS\u0022,\u0022CUMMINSIND.NS\u0022,\u0022BHARATFORG.NS\u0022,\u0022ASHOKLEY.NS\u0022,\u0022TVSMOTOR.NS\u0022,\u0022MOTHERSON.NS\u0022,\u0022BOSCHLTD.NS\u0022,\u0022BALKRISIND.NS\u0022,\u0022MRF.NS\u0022,\u0022APOLLOTYRE.NS\u0022,\u0022EXIDEIND.NS\u0022,\u0022ESCORTS.NS\u0022,\u0022SONACOMS.NS\u0022,\u0022IDEA.NS\u0022,\u0022INDUSTOWER.NS\u0022,\u0022TATACOMM.NS\u0022,\u0022CONCOR.NS\u0022,\u0022IRFC.NS\u0022,\u0022RVNL.NS\u0022,\u0022MAZDOCK.NS\u0022,\u0022COCHINSHIP.NS\u0022,\u0022KPITTECH.NS\u0022,\u0022TATAELXSI.NS\u0022,\u0022LTTS.NS\u0022,\u0022OFSS.NS\u0022,\u0022NAUKRI.NS\u0022,\u0022MCX.NS\u0022,\u0022BSE.NS\u0022,\u0022CDSL.NS\u0022,\u0022IEX.NS\u0022,\u0022ANGELONE.NS\u0022,\u0022MANAPPURAM.NS\u0022,\u0022LICHSGFIN.NS\u0022,\u0022CANFINHOME.NS\u0022,\u0022ABCAPITAL.NS\u0022,\u0022LTF.NS\u0022,\u0022M\u0026MFIN.NS\u0022,\u0022PIRAMALFIN.NS\u0022,\u0022RBLBANK.NS\u0022,\u0022BANDHANBNK.NS\u0022,\u0022CUB.NS\u0022,\u0022KARURVYSYA.NS\u0022,\u0022LAURUSLABS.NS\u0022,\u0022GRANULES.NS\u0022,\u0022GLENMARK.NS\u0022,\u0022IPCALAB.NS\u0022,\u0022SYNGENE.NS\u0022,\u0022MAXHEALTH.NS\u0022,\u0022FORTIS.NS\u0022,\u0022LALPATHLAB.NS\u0022,\u0022METROPOLIS.NS\u0022,\u0022CROMPTON.NS\u0022,\u0022WHIRLPOOL.NS\u0022,\u0022BLUESTARCO.NS\u0022,\u0022KAJARIACER.NS\u0022,\u0022PRESTIGE.NS\u0022,\u0022BRIGADE.NS\u0022,\u0022PHOENIXLTD.NS\u0022,\u0022PVRINOX.NS\u0022,\u0022SUNTV.NS\u0022,\u0022ZEEL.NS\u0022,\u0022INDIAMART.NS\u0022,\u0022CCAVENUE.NS\u0022,\u0022DELHIVERY.NS\u0022,\u0022NYKAA.NS\u0022,\u0022PAYTM.NS\u0022,\u0022POLICYBZR.NS\u0022,\u0022ETERNAL.NS\u0022,\u0022GMRAIRPORT.NS\u0022,\u0022ABREL.NS\u0022,\u0022LTM.NS\u0022,\u0022ADANIENSOL.NS\u0022,\u0022ADANIGREEN.NS\u0022,\u0022ADANIPOWER.NS\u0022,\u0022ATGL.NS\u0022,\u0022BAJAJHLDNG.NS\u0022,\u0022BANKINDIA.NS\u0022,\u0022UNIONBANK.NS\u0022,\u0022AUBANK.NS\u0022,\u0022IDBI.NS\u0022,\u0022ICICIGI.NS\u0022,\u0022LICI.NS\u0022,\u0022JIOFIN.NS\u0022,\u0022HDFCAMC.NS\u0022,\u0022INDHOTEL.NS\u0022,\u0022TORNTPOWER.NS\u0022,\u0022SJVN.NS\u0022,\u0022PETRONET.NS\u0022,\u0022IGL.NS\u0022,\u0022MGL.NS\u0022,\u0022OIL.NS\u0022,\u0022HINDZINC.NS\u0022,\u0022HINDCOPPER.NS\u0022,\u0022JSL.NS\u0022,\u0022SUZLON.NS\u0022,\u0022IREDA.NS\u0022,\u0022BDL.NS\u0022,\u0022APLAPOLLO.NS\u0022,\u0022TIINDIA.NS\u0022,\u0022MANKIND.NS\u0022,\u0022GODREJAGRO.NS\u0022,\u0022PATANJALI.NS\u0022,\u0022ANANDRATHI.NS\u0022,\u0022ATHERENERG.NS\u0022,\u0022DATAPATTNS.NS\u0022,\u0022360ONE.NS\u0022,\u0022HYUNDAI.NS\u0022,\u0022INDIANB.NS\u0022,\u0022KAYNES.NS\u0022,\u0022MAHABANK.NS\u0022,\u0022INOXWIND.NS\u0022,\u0022AMBER.NS\u0022,\u0022KALYANKJIL.NS\u0022,\u0022MOTILALOFS.NS\u0022,\u0022PGEL.NS\u0022,\u0022MFSL.NS\u0022,\u0022RADICO.NS\u0022,\u0022SYRMA.NS\u0022,\u0022WAAREEENER.NS\u0022,\u0022UJJIVANSFB.NS\u0022,\u0022SOLARINDS.NS\u0022,\u0022CAMS.NS\u0022,\u0022VMM.NS\u0022,\u0022NAM-INDIA.NS\u0022,\u0022GODFRYPHLP.NS\u0022,\u0022POWERINDIA.NS\u0022,\u0022SBICARD.NS\u0022,\u0022SWIGGY.NS\u0022,\u0022KEI.NS\u0022,\u0022NBCC.NS\u0022,\u0022ICICILIFE.NS\u0022,\u0022PREMIERENE.NS\u0022,\u0022SAGILITY.NS\u0022,\u0022TMPV.NS\u0022,\u0022UNOMINDA.NS\u0022,\u0022FORCEMOT.NS\u0022,\u0022KFINTECH.NS\u0022,\u0022PNBHOUSING.NS\u0022,\u0022YESBANK.NS\u0022,\u0022ENRIN.NS\u0022,\u0022GVT\u0026D.NS\u0022,\u0022TATACAP.NS\u0022,\u0022TMCV.NS\u0022,\u0022VAML.NS\u0022]}\n--- server output ---\n\u25B2 Next.js 16.4.6\r\n- Local:         http://127.0.0.1:3149\r\n- Network:       http://127.0.0.1:3149\r\n\u2713 Ready in 985ms\r\n\u26A0 Warning: Next.js ignored package-lock.json in C:\\Users\\5709xr\\OneDrive - BP\\Documents\\VS Code because it is outside the current Git repository (C:\\Users\\5709xr\\OneDrive - BP\\Documents\\VS Code\\Trendy\\tredye-pulse).\r\n To use this directory, set \u0060outputFileTracingRoot\u0060 in your Next.js config.\r\n\r\n\u2713 Running next.config.ts took 192ms\r\n",
+        "durationMs": 4093
+      }
+    ],
+    "executions": [
+      {
+        "source": "tsc-no-emit",
+        "resolvedExecutable": "C:\\Program Files\\nodejs\\node.EXE",
+        "args": [
+          "node_modules\\typescript\\bin\\tsc",
+          "--noEmit"
+        ],
+        "cwd": "C:\\Users\\5709xr\\OneDrive - BP\\Documents\\VS Code\\Trendy\\tredye-pulse",
+        "env": {},
+        "prependPath": [],
+        "platform": "win32"
+      },
+      {
+        "source": "tests-pass",
+        "resolvedExecutable": "C:\\Program Files\\nodejs\\node.EXE",
+        "args": [
+          "--test"
+        ],
+        "cwd": "C:\\Users\\5709xr\\OneDrive - BP\\Documents\\VS Code\\Trendy\\tredye-pulse",
+        "env": {},
+        "prependPath": [],
+        "platform": "win32"
+      },
+      {
+        "source": "dashboard-renders",
+        "resolvedExecutable": "C:\\Program Files\\nodejs\\node.EXE",
+        "args": [
+          "node_modules\\next\\dist\\bin\\next",
+          "start",
+          "--hostname",
+          "127.0.0.1",
+          "--port",
+          "3149"
+        ],
+        "cwd": "C:\\Users\\5709xr\\OneDrive - BP\\Documents\\VS Code\\Trendy\\tredye-pulse",
+        "env": {},
+        "prependPath": [],
+        "platform": "win32"
+      },
+      {
+        "source": "retired-ticker-rejected",
+        "resolvedExecutable": "C:\\Program Files\\nodejs\\node.EXE",
+        "args": [
+          "node_modules\\next\\dist\\bin\\next",
+          "start",
+          "--hostname",
+          "127.0.0.1",
+          "--port",
+          "3149"
+        ],
+        "cwd": "C:\\Users\\5709xr\\OneDrive - BP\\Documents\\VS Code\\Trendy\\tredye-pulse",
+        "env": {},
+        "prependPath": [],
+        "platform": "win32"
+      }
+    ]
+  }
+}
