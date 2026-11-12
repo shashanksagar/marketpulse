@@ -1,5 +1,7 @@
 # Market Pulse
 
+App for showing India Stock Market pulse, trend, sentiments, money movements and more.
+
 Dark-mode Indian market intelligence built with Next.js App Router, TypeScript,
 Tailwind CSS, lightweight-charts, lucide-react, yahoo-finance2, and custom SVG.
 No API keys, paid services, databases, or accounts.
