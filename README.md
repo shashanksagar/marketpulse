@@ -4,7 +4,9 @@ App for showing India Stock Market pulse, trend, sentiments, money movements and
 
 Dark-mode Indian market intelligence built with Next.js App Router, TypeScript,
 Tailwind CSS, lightweight-charts, lucide-react, yahoo-finance2, and custom SVG.
-No API keys, paid services, databases, or accounts.
+Runs without credentials using process memory and browser-local persistence.
+Optional Supabase Postgres makes snapshots and paper portfolios durable across
+Vercel cold starts. There is no broker connection or real-money order execution.
 
 ## Run and verify
 
@@ -16,7 +18,9 @@ npm run dev
 ```
 
 Open http://localhost:3000. The dashboard renders immediately with N/A placeholders,
-then shows observed delayed data when Yahoo responds. No synthetic prices are used.
+then restores saved observations while providers refresh. No synthetic prices
+or candles are used. A first installation with no saved snapshot still needs
+at least one successful upstream observation.
 
 ```sh
 npm test
@@ -39,6 +43,11 @@ npm start
 - Rotation clicks synchronize the scanner sector dropdown; clear the sector
   chip or reset all filters to restore coverage. Other filters are composable.
 - Responsive layouts, keyboard focus support, and reduced-motion handling.
+- Paper Algo navigation, six paused-by-default presets, configurable risk and
+  symbol scope, manual paper LONG/SHORT fills, square-off, reset, ledger filters,
+  CSV export, six-month backtests and SVG equity curves.
+- Scanner rows open Paper Trade / Backtest for that stock. Open paper positions
+  appear as Entry / Stop / Target horizontal lines on the symbol's chart.
 
 ## Universe and eligibility
 
@@ -69,24 +78,38 @@ or the three main indices can be selected. Invalid symbols return HTTP 400 and
 the supported list.
 
 All quotes, the rotation indices, and India VIX (`^INDIAVIX`) are fetched in
-deduplicated batches of **at most 40 symbols**. Each batch uses
-`Promise.allSettled`; batches are sequential with **150ms** between them.
-Failed chunks do not discard successful ones. Network requests time out after
-6 seconds. Pacing reduces pressure but **cannot guarantee no Yahoo rate limits**.
+deduplicated batches of **at most 25 symbols**, with a **10-second batch deadline**
+and **250-349ms jittered pacing**. Transient network, 429 and cookie/crumb failures
+retry with exponential backoff, up to three attempts within the deadline.
+Browser headers are set explicitly. A broken cookie handshake opens a
+per-refresh circuit breaker rather than repeating it for every batch.
 
-The shared dataset and symbol responses use a **30-minute in-memory cache**.
-Concurrent initial/refresh requests share the snapshot fetch. The browser
-rechecks every 30 minutes. `?refresh=true` and the Refresh button bypass the
-snapshot and selected history caches; refreshing invalidates old symbol
-responses. Frequent manual refreshes may cause Yahoo throttling.
+Missing equities try NSE's public F&O equity-index API after homepage cookie
+warm-up. Yahoo chart metadata then recovers missing symbols using three paced
+workers, six-second requests and a 110-second recovery budget. Daily volume
+baselines use the preceding ten observed sessions, never invented averages.
+NSE may block datacenter requests too; these public sources are not an SLA.
+Failed or incomplete batches never discard other successes or erase saved prices.
 
-Six months of selected-symbol candles are fetched lazily and cached separately,
-rather than requesting hundreds of histories on every initial load. First loads
-and first uncached chart selections depend on Yahoo latency. Warm response hits
-avoid Yahoo completely; a universal <50ms end-to-end guarantee is not possible
-across cold starts, network latency, and payload transfer. `X-Market-Cache` is
-`HIT`, `MISS`, or `REFRESH`; HTTP caching is disabled so bypasses reach the route.
-Caches are per process and reset on restarts or serverless cold starts.
+The shared dataset uses a **30-minute process cache** backed by the latest
+Supabase snapshot when configured. Concurrent refresh requests share one task.
+The browser polls the cached API every 15 seconds to pick up completed background
+refreshes without repeatedly fetching Yahoo. `?refresh=true` queues a shared
+refresh while immediately returning existing observations. Background work uses
+Next.js `after`, including on Vercel. Frequent refreshes can still cause throttling.
+
+Six months of selected-symbol candles load lazily in the background and are
+cached separately. `&history=true` waits for observed candles, as used by
+backtesting. History failures preserve a previously observed series. A cached
+snapshot is served without waiting for history or a market-wide refresh.
+`X-Market-Cache` is `HIT` or `STALE`; HTTP caching is disabled.
+
+`snapshotStatus` is `fresh`, `cached`, or `unavailable`. Quotes include their
+provider `observedAt` timestamp and a `cached` flag. Saved quotes and observations
+older than 30 minutes display **Cached / Last Session**; paper execution skips
+them. Browser storage retains the most recent usable snapshot, including when
+Supabase is absent. If no provider and no saved observation exist, N/A is honest
+and unavoidable; prices are never fabricated to fill coverage.
 
 Each quote exposes `price`, `changePercent`, `volume`, `avgVolume`,
 `averageVolume` (compatibility alias), `volumeRatio`, `dayHigh`, `dayLow`,
@@ -96,13 +119,102 @@ Zero-volume sessions are valid; missing/invalid averages, volume ratios, signals
 and ranges are null rather than modeled. Flat observed day ranges use a neutral midpoint; out-of-range
 prices clamp the marker to [0,1].
 
-Source is `yahoo`, `mixed`, or `unavailable`, with separate `candleSource`, mood/rotation
+Source is `yahoo`, `nse`, `mixed`, or `unavailable`, with separate `candleSource`, mood/rotation
 sources, and an API coverage summary. Missing fields are logged, included in
 warning/provenance metadata, and rendered as N/A in the UI. Missing prices null
 all dependent observations; partial quotes retain valid observed fields.
 Unavailable rows sort last and do not match numeric/signal quick filters.
 History failures return an empty candle array with an explicit unavailable
 placeholder, not generated candles. Fetched time is not session time.
+
+## Optional Supabase and scheduled sync
+
+1. Run [001_paper_algo.sql](supabase/migrations/001_paper_algo.sql) in your
+   Supabase SQL editor. It creates snapshots, portfolios, strategies, positions,
+   orders, RLS restrictions and transactional save/load functions.
+2. Set these environment variables locally in git-ignored `.env.local` and in
+   your Vercel project:
+
+   ```text
+   NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
+   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=YOUR_BROWSER_PUBLISHABLE_KEY
+   SUPABASE_SERVICE_ROLE_KEY=YOUR_SERVER_ONLY_SERVICE_ROLE_KEY
+   CRON_SECRET=YOUR_RANDOM_CRON_SECRET
+   ```
+
+   Never prefix the service-role key with `NEXT_PUBLIC_`, put it in browser
+   code, or commit it. The publishable key alone does **not** enable writes:
+   private tables and RPCs are deliberately inaccessible to browser roles.
+3. With URL + service-role key configured, snapshots persist automatically and
+   portfolios use `/api/paper`. Without both, the app uses memory and localStorage.
+   Cloud failures are logged and surfaced, not silently reported as successful.
+4. [vercel.json](vercel.json) schedules `/api/cron/sync-market` at
+   03:45, then every 15 minutes from 04:00 through 10:00 UTC, Monday-Friday.
+   It requires `Authorization: Bearer <CRON_SECRET>` and refuses requests when
+   the secret is unset. Exchange holidays are not inferred.
+   **Vercel Hobby does not support 15-minute cron frequency**; use a compatible
+   Vercel plan or an external scheduler calling the same secured endpoint.
+   Supabase's free tier can still provide the database.
+
+Anonymous cloud portfolios are isolated by a random browser UUID stored in an
+HttpOnly, SameSite=Strict cookie. Writes check origin and use atomic revision
+compare-and-swap to reject conflicting tabs. This is not account authentication
+or cross-device sync; clearing the cookie creates a new identity. Local and
+cloud portfolios are separate; switching modes does not overwrite or import a
+local portfolio implicitly. Browser backups remain private to that browser.
+No Upstash account is required; the fallback is memory plus localStorage.
+
+## Paper execution and historical simulation
+
+Default virtual capital is INR 10,00,000; reset can choose INR 1,000 through
+1 billion. All presets start paused. Every strategy has an allocation cap
+across its positions, SL, target and optional trailing stop. EMA, RSI and
+squeeze presets initially scan RELIANCE; choose another symbol in Customize.
+Other presets scan observed stocks. OI is the existing simulated price/volume
+signal, not exchange open interest. Financials maps to Banking, Capital Goods /
+Realty / Telecom to Infra, and Consumer to FMCG for rotation rules.
+
+Risk exits run even when entries are paused. New source timestamps deduplicate
+fills, including delayed feeds; cached, null, undated and unavailable quotes
+cannot execute. Sector baskets hold at most two names, each capped at half the
+strategy allocation, and exit when the held sector's flow becomes negative.
+
+Fills apply 0.05% adverse slippage and INR 20 brokerage per order. The educational
+delivery-style cost estimate includes 0.1% STT each side, 0.00322% exchange/SEBI,
+18% GST on brokerage/exchange costs, and 0.015% buy-side stamp duty. This is not
+a broker tax statement. Shorts reserve 100% entry notional: sale proceeds cannot
+fund additional positions. Overnight cash-equity short eligibility is not
+simulated. Realized P&L deducts both entry and exit fees; unrealized P&L is gross.
+
+The evaluator runs while the browser is open, on fresh observed snapshots; the
+cron refreshes market data, **not unattended strategy execution**. Delayed public
+quotes cannot provide exchange-level stop guarantees or intraday ORB precision.
+The ORB preset is explicitly a daily-range momentum proxy.
+
+Backtests use completed daily signals, next-session open fills, stop-first
+handling when both SL and target occur in a bar, adverse gap fills, identical
+friction, trailing stops activated for the next bar, and terminal liquidation.
+Macro presets obtain real six-month market-wide histories through
+`/api/algo/backtest-data`: daily observed breadth/NIFTY/VIX for mood and actual
+sector-index returns for rotation. This on-demand operation shares three
+paced workers and a two-minute universe budget, rather than loading hundreds
+of histories on normal dashboard visits. Partial historical coverage is
+disclosed, and unknown required context skips entries. No current market mood
+is projected into the past.
+
+Sector backtests evaluate both historical leaders as one portfolio, not two
+independently funded accounts. Missing terminal bars retain last-observed marks
+without inventing a liquidation fill. EMA/RSI and volume baselines have warm-up
+periods within the six-month window. Results include net P&L, closed-trade win
+rate, peak-to-trough drawdown, profit factor, closed trades and daily equity.
+Profit factor is displayed as "No losing trades" when gains exist without losses.
+Daily-bar results cannot reproduce intraday execution and include survivorship
+bias from today's configured universe.
+
+Tests use Node's canonical runner. Test-only deterministic price fixtures never
+enter live code. Embedded Postgres (PGlite) executes the actual migration and
+checks transactional rollback, round-trip parity and publishable-role denial;
+it does not replace verifying a deployment's Supabase credentials/PostgREST.
 
 ## Market mood methodology
 

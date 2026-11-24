@@ -4,8 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import { CandlestickSeries, ColorType, CrosshairMode, HistogramSeries, createChart } from "lightweight-charts";
 import { ArrowDownRight, ArrowUpRight, ChartCandlestick, ChevronDown, Maximize2 } from "lucide-react";
 import { percent, price, type Candle, type MarketData } from "@/lib/market";
+import type { Position } from "@/lib/algo/types";
 
-export default function TradingChart({ data, onSearch, loading }: { data: MarketData; onSearch: () => void; loading: boolean }) {
+export default function TradingChart({ data, onSearch, loading, positions }: { data: MarketData; onSearch: () => void; loading: boolean; positions: Position[] }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLElement>(null);
   const [months, setMonths] = useState(6);
@@ -34,6 +35,13 @@ export default function TradingChart({ data, onSearch, loading }: { data: Market
       priceLineColor: "#b7f76b", priceLineStyle: 2,
     });
     series.setData(candles);
+    for (const position of positions.filter((p) => p.symbol === data.symbol)) {
+      for (const [title, value, color] of [
+        ["Paper Entry", position.avg_entry_price, "#60a5fa"],
+        ["Paper Stop", position.stop_loss_price, "#fb7185"],
+        ["Paper Target", position.target_price, "#b7f76b"],
+      ] as const) series.createPriceLine({ price: value, color, lineWidth: 1, lineStyle: 2, axisLabelVisible: true, title: `${title} ${position.side}` });
+    }
     const volumes = chart.addSeries(HistogramSeries, { priceFormat: { type: "volume" }, priceScaleId: "", lastValueVisible: false, priceLineVisible: false });
     volumes.priceScale().applyOptions({ scaleMargins: { top: 0.83, bottom: 0 } });
     volumes.setData(candles.map((c) => ({ time: c.time, value: c.volume, color: c.close >= c.open ? "#a7e77a35" : "#ed758735" })));
@@ -43,7 +51,7 @@ export default function TradingChart({ data, onSearch, loading }: { data: Market
       setHovered(candle ? { candle, symbol: data.symbol } : null);
     });
     return () => chart.remove();
-  }, [data.candles, data.symbol, months]);
+  }, [data.candles, data.symbol, months, positions]);
   const activeCandle = hovered?.symbol === data.symbol && data.candles.includes(hovered.candle) ? hovered.candle : null;
   const displayed = activeCandle ?? q;
   const close = "close" in displayed ? displayed.close : displayed.price;

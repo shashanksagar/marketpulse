@@ -2,7 +2,7 @@
 
 import { Activity, ArrowUpRight, Command, Search } from "lucide-react";
 
-export type Tab = "Pulse" | "Sector Flow" | "Screeners" | "Watchlist";
+export type Tab = "Pulse" | "Sector Flow" | "Screeners" | "Watchlist" | "Paper Algo";
 
 export default function Navbar({ active, onNavigate, onSearch }: {
   active: Tab; onNavigate: (tab: Tab) => void; onSearch: () => void;
@@ -15,7 +15,7 @@ export default function Navbar({ active, onNavigate, onSearch }: {
           <span className="text-[19px] font-bold tracking-tight">market<span className="text-[#b7f76b]">pulse</span><span className="ml-1 text-[#657083]">.</span></span>
         </button>
         <nav className="hidden h-full items-center gap-6 md:flex" aria-label="Main navigation">
-          {(["Pulse", "Sector Flow", "Screeners", "Watchlist"] as Tab[]).map((tab) => (
+          {(["Pulse", "Sector Flow", "Screeners", "Watchlist", "Paper Algo"] as Tab[]).map((tab) => (
             <button key={tab} onClick={() => onNavigate(tab)} aria-current={active === tab ? "page" : undefined}
               className={`relative h-full text-[13px] font-medium transition-colors ${active === tab ? "text-[#b7f76b] after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:bg-[#b7f76b]" : "text-slate-400 hover:text-white"}`}>{tab}</button>
           ))}
@@ -29,7 +29,7 @@ export default function Navbar({ active, onNavigate, onSearch }: {
         </div>
       </div>
       <nav className="flex justify-around border-t border-[#202630] md:hidden" aria-label="Mobile navigation">
-        {(["Pulse", "Sector Flow", "Screeners", "Watchlist"] as Tab[]).map((tab) => <button key={tab} onClick={() => onNavigate(tab)} className={`p-3 text-xs ${active === tab ? "text-[#b7f76b]" : "text-slate-400"}`}>{tab}{tab === "Sector Flow" && <ArrowUpRight size={10} className="ml-1 inline" />}</button>)}
+        {(["Pulse", "Sector Flow", "Screeners", "Watchlist", "Paper Algo"] as Tab[]).map((tab) => <button key={tab} onClick={() => onNavigate(tab)} className={`p-3 text-xs ${active === tab ? "text-[#b7f76b]" : "text-slate-400"}`}>{tab}{tab === "Sector Flow" && <ArrowUpRight size={10} className="ml-1 inline" />}</button>)}
       </nav>
     </header>
   );

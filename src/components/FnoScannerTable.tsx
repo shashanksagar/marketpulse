@@ -17,8 +17,9 @@ const signalColors: Record<Signal, string> = {
   "Neutral": "bg-[#252c37] text-slate-400",
 };
 
-export default function FnoScannerTable({ stocks, onSelect, sectorFilter, onSectorChange, watchlist, onToggleWatch, watchOnly, onWatchOnly }: {
+export default function FnoScannerTable({ stocks, onSelect, onPaperTrade, sectorFilter, onSectorChange, watchlist, onToggleWatch, watchOnly, onWatchOnly }: {
   stocks: MarketQuote[]; onSelect: (symbol: string) => void;
+  onPaperTrade: (symbol: string) => void;
   sectorFilter: Sector | null; onSectorChange: (sector: Sector | null) => void;
   watchlist: string[]; onToggleWatch: (symbol: string) => void;
   watchOnly: boolean; onWatchOnly: (value: boolean) => void;
@@ -87,7 +88,7 @@ export default function FnoScannerTable({ stocks, onSelect, sectorFilter, onSect
             <td className="px-4 text-right"><span className="font-mono tabular-nums text-slate-200">{decimal(q.volumeRatio, 2, "x")}</span><span className="ml-2 inline-flex items-end gap-0.5" aria-hidden="true">{[0.5, 1, 1.5, 2, 3].map((level, index) => <span key={level} className={`w-1 rounded-[1px] ${q.volumeRatio !== null && q.volumeRatio >= level ? "bg-[#a4d873]" : "bg-[#2c3440]"}`} style={{ height: 4 + index * 2 }} />)}</span><span className="mt-1 block whitespace-nowrap font-mono text-[9px] tabular-nums text-slate-500">{decimal(q.volume === null ? null : q.volume / 1e6, 2, "M")} / {decimal(q.avgVolume === null ? null : q.avgVolume / 1e6, 2, "M")}</span></td>
             <td className="w-36 px-4">{q.rangePosition === null ? <span className="block text-center font-mono tabular-nums text-slate-500">N/A</span> : <div className="relative my-2 h-1 rounded-full bg-[#2c3440]" role="img" aria-label={`${ticker(q.symbol)} day range position ${(q.rangePosition * 100).toFixed(0)} percent`}><span className={`absolute top-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full ring-2 ring-[#10141c] ${q.changePercent !== null && q.changePercent >= 0 ? "bg-emerald-400" : "bg-rose-400"}`} style={{ left: `${q.rangePosition * 100}%` }} /></div>}<div className="mt-2 flex justify-between gap-2 font-mono text-[8px] tabular-nums text-slate-500"><span>{price(q.dayLow)}</span><span>{price(q.dayHigh)}</span></div></td>
             <td className="px-4 text-right"><span className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded px-2 py-1 text-[10px] ${q.signal === null ? "text-slate-500" : signalColors[q.signal]}`}><span className="size-1 rounded-full bg-current" />{q.signal ?? "N/A"}</span></td>
-            <td className="pr-4 text-slate-500"><ArrowUpRight size={13} /></td>
+            <td className="pr-4 text-slate-500"><button onClick={(event) => { event.stopPropagation(); onPaperTrade(q.symbol); }} aria-label={`Paper Trade / Backtest ${ticker(q.symbol)}`} className="whitespace-nowrap rounded border border-[#415d31] px-2 py-2 text-[10px] text-[#b7f76b]">Paper Trade / Backtest</button><ArrowUpRight size={13} className="mt-2" /></td>
           </tr>)}</tbody>
         </table>
         {!rows.length && <div role="status" className="p-12 text-center text-sm text-slate-400">No stocks match these filters. Clear filters or choose another sector.</div>}

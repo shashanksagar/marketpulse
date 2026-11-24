@@ -250,18 +250,18 @@ test("one-sided and unchanged markets never fabricate opposing flows", () => {
   }
 });
 
-test("quote chunks cap requests at 40, pace 150ms, deduplicate, and survive failed chunks", async () => {
+test("quote chunks cap requests at 25, pace with jitter, deduplicate, and survive failed chunks", async () => {
   const symbols = Array.from({ length: 95 }, (_, index) => `TEST${index}.NS`);
   const batches = [], waits = [];
   const result = await fetchQuoteChunks([...symbols, symbols[0]], async (chunk) => {
     batches.push(chunk);
-    if (chunk[0] === "TEST40.NS") throw new Error("Simulated rate limit");
+    if (chunk[0] === "TEST25.NS") throw new Error("Simulated rate limit");
     return chunk.map((symbol) => ({ symbol }));
   }, async (ms) => { waits.push(ms); });
-  assert.deepEqual(batches.map((batch) => batch.length), [40, 40, 15]);
-  assert.deepEqual(waits, [150, 150]);
-  assert.equal(result.quotes.length, 55);
+  assert.deepEqual(batches.map((batch) => batch.length), [25, 25, 25, 20]);
+  assert.ok(waits.length === 3 && waits.every((ms) => ms >= 250 && ms < 350));
+  assert.equal(result.quotes.length, 70);
   assert.equal(result.failures.length, 1);
-  assert.deepEqual(result.failures[0].symbols, symbols.slice(40, 80));
+  assert.deepEqual(result.failures[0].symbols, symbols.slice(25, 50));
   assert.ok(result.quotes.some((quote) => quote.symbol === "TEST94.NS"));
 });

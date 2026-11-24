@@ -1,7 +1,7 @@
 import { FNO_STOCKS, STOCK_SECTORS, type StockSector } from "../data/fnoStocks.ts";
 
 export type Signal = "Long Buildup" | "Short Covering" | "Short Buildup" | "Long Unwinding" | "Neutral";
-export type Source = "yahoo" | "mixed" | "unavailable";
+export type Source = "yahoo" | "nse" | "mixed" | "unavailable";
 export type RotationSector = "Banking" | "IT" | "Auto" | "Energy" | "FMCG" | "Pharma" | "Metals" | "Infra";
 export type Sector = StockSector;
 export interface Instrument { symbol: string; name: string; sector: Sector | null }
@@ -33,6 +33,8 @@ export interface MarketQuote {
   source: Source;
   asOf: string | null;
   missingFields: string[];
+  observedAt?: string | null;
+  cached?: boolean;
 }
 export interface MarketData {
   symbol: string;
@@ -49,7 +51,9 @@ export interface MarketData {
   source: Source;
   fetchedAt: string;
   warnings: string[];
+  snapshotStatus?: "fresh" | "cached" | "unavailable";
 }
+export type MarketSnapshot = Omit<MarketData, "symbol" | "quote" | "candles" | "candleSource">;
 export const finite = (n: unknown): n is number => typeof n === "number" && Number.isFinite(n);
 const positive = (n: unknown): n is number => finite(n) && n > 0;
 const clamp = (value: number, min = 0, max = 100) => Math.min(max, Math.max(min, value));
@@ -81,6 +85,7 @@ export function summarize(stocks: MarketQuote[]) {
 }
 export interface QuoteInput {
   symbol: string;
+  provider?: "yahoo" | "nse";
   regularMarketPrice?: number;
   regularMarketPreviousClose?: number;
   regularMarketChange?: number;
@@ -112,7 +117,8 @@ export function normalizeQuote(instrument: Instrument, input?: QuoteInput): Mark
   return {
     ...instrument, ...fields, avgVolume: average, volumeRatio: ratio, dayHigh: high, dayLow: low,
     rangePosition: value !== null && high !== null && low !== null ? rangePosition(value, low, high) : null,
-    signal: computeSignal(changePercent, ratio), source: value === null ? "unavailable" : missingFields.length ? "mixed" : "yahoo", missingFields,
+    signal: computeSignal(changePercent, ratio), source: value === null ? "unavailable" : missingFields.length ? "mixed" : input?.provider ?? "yahoo", missingFields,
+    observedAt: value !== null && date instanceof Date && finite(date.getTime()) ? date.toISOString() : null, cached: false,
   };
 }
 
