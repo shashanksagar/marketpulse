@@ -148,13 +148,14 @@ placeholder, not generated candles. Fetched time is not session time.
 3. With URL + service-role key configured, snapshots persist automatically and
    portfolios use `/api/paper`. Without both, the app uses memory and localStorage.
    Cloud failures are logged and surfaced, not silently reported as successful.
-4. [vercel.json](vercel.json) schedules `/api/cron/sync-market` at
-   03:45, then every 15 minutes from 04:00 through 10:00 UTC, Monday-Friday.
-   It requires `Authorization: Bearer <CRON_SECRET>` and refuses requests when
-   the secret is unset. Exchange holidays are not inferred.
-   **Vercel Hobby does not support 15-minute cron frequency**; use a compatible
-   Vercel plan or an external scheduler calling the same secured endpoint.
-   Supabase's free tier can still provide the database.
+4. Vercel Cron is intentionally not configured: the Hobby plan only permits
+   daily cron jobs. To sync every 15 minutes during NSE hours, configure an
+   external scheduler to send `GET https://YOUR_DEPLOYMENT_DOMAIN/api/cron/sync-market`
+   with the header `Authorization: Bearer <CRON_SECRET>`. Use UTC weekdays with
+   these cron expressions: `45 3 * * 1-5`, `*/15 4-9 * * 1-5`, and
+   `0 10 * * 1-5`. Set the same `CRON_SECRET` in the scheduler and Vercel.
+   The endpoint rejects requests when the secret is unset; exchange holidays
+   are not inferred. Supabase's free tier can still provide the database.
 
 Anonymous cloud portfolios are isolated by a random browser UUID stored in an
 HttpOnly, SameSite=Strict cookie. Writes check origin and use atomic revision
