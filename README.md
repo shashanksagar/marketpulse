@@ -245,6 +245,8 @@ Score = daily change / 100 * relative index volume. Estimated rupees multiply
 that score by an **assumed INR 100,000 crore notional**. These are **not actual
 capital transfers or traded rupees**. Ribbons proportionally pair only the
 smaller total inflow/outflow; one-sided or unchanged markets fabricate no links.
+When quote endpoints omit percentage change, chart recovery derives it from the
+observed market price and previous observed close.
 Yahoo often omits index volume or returns zero: labeled illustrative weights
 preserve real daily changes where available. Tooltips show exact inputs.
 Missing sector changes are excluded and listed as N/A, never synthesized.

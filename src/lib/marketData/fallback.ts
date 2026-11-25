@@ -52,6 +52,9 @@ export async function recoverChartQuotes(
         if (number(chart.meta.regularMarketPrice) && chart.meta.regularMarketPrice > 0) quotes.push({
           symbol, regularMarketPrice: chart.meta.regularMarketPrice, regularMarketTime: chart.meta.regularMarketTime,
           regularMarketPreviousClose: previous?.close ?? undefined,
+          regularMarketChangePercent: previous?.close && previous.close > 0
+            ? (chart.meta.regularMarketPrice - previous.close) / previous.close * 100
+            : undefined,
           regularMarketOpen: last?.open ?? undefined, regularMarketDayHigh: last?.high ?? undefined, regularMarketDayLow: last?.low ?? undefined,
           regularMarketVolume: last?.volume ?? undefined,
           averageDailyVolume10Day: volumes.length === 10 ? volumes.reduce((sum, v) => sum + v, 0) / 10 : undefined,

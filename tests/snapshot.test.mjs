@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { createInitialData, INSTRUMENTS, normalizeQuote } from "../src/lib/market.ts";
+import { buildMoneyRotation, createInitialData, INSTRUMENTS, normalizeQuote, ROTATION_INDICES } from "../src/lib/market.ts";
 import { fetchQuoteChunks } from "../src/lib/quoteBatch.ts";
 import { preserveQuotes, recoverChartQuotes, retry, fetchNseQuotes } from "../src/lib/marketData/fallback.ts";
 import { mergeMarketData, cachedData } from "../src/lib/marketData/clientSnapshot.ts";
@@ -72,6 +72,21 @@ test("chart recovery handles every missing symbol with three bounded workers and
   assert.equal(peak, 3);
   assert.equal(result.quotes[0].regularMarketPreviousClose, 109);
   assert.equal(result.quotes[0].averageDailyVolume10Day, 1000);
+});
+
+test("chart-recovered sector indices retain observed daily changes for money rotation", async () => {
+  const result = await recoverChartQuotes(ROTATION_INDICES.map((index) => index.symbol), async () => ({
+    meta: { regularMarketPrice: 110, regularMarketTime: now },
+    quotes: [
+      { date: new Date("2026-11-23T00:00:00Z"), open: 100, close: 109, high: 110, low: 99, volume: 1000 },
+      { date: new Date("2026-11-24T00:00:00Z"), open: 109, close: 110, high: 111, low: 108, volume: 1200 },
+    ],
+  }), new AbortController().signal, async () => {});
+
+  const rotation = buildMoneyRotation(result.quotes);
+  assert.equal(rotation.sectors.length, ROTATION_INDICES.length);
+  assert.equal(rotation.unavailable.length, 0);
+  assert.ok(rotation.sectors.every((sector) => Math.abs(sector.changePercent - (110 - 109) / 109 * 100) < 1e-10));
 });
 
 test("NSE fallback warms cookies and returns only observed requested equity prices", async (t) => {
